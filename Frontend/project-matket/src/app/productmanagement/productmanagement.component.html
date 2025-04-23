@@ -1,0 +1,125 @@
+<div class="product-management">
+
+  <!-- Nút Thêm sản phẩm -->
+  <div class="add-product-btn">
+    <button (click)="showAddForm = true" style="margin-right: 10px;">Thêm sản phẩm</button>
+    <button (click)="goToCategory()" style="background-color: #17a2b8;margin-right: 10px  ;">Xem danh mục</button>
+    <button (click)="goToSupplier()" style="background-color: #17a2b8;">Xem nhà phân phối </button>
+
+  </div>
+
+
+  <!-- Form thêm sản phẩm -->
+  <div class="product-form" *ngIf="showAddForm">
+    <h2>Thêm sản phẩm mới</h2>
+    <form (ngSubmit)="saveProduct()">
+      
+      <!-- Tên sản phẩm -->
+      <div class="form-group">
+        <label for="productName">Tên sản phẩm:</label>
+        <input type="text" id="productName" [(ngModel)]="product.productName" name="productName" required />
+      </div>
+      
+      <!-- Danh mục -->
+      <div class="form-group">
+        <label for="categoryId">Danh mục:</label>
+        <select id="categoryId" [(ngModel)]="product.category.categoryId" name="categoryId" required>
+          <option *ngFor="let category of categories" [value]="category.categoryId">
+            {{ category.categoryName }}
+          </option>
+        </select>
+      </div>
+      
+      <!-- Nhà cung cấp -->
+      <div class="form-group">
+        <label for="supplierId">Nhà cung cấp:</label>
+        <select id="supplierId" [(ngModel)]="product.supplier.supplierId" name="supplierId" required>
+          <option *ngFor="let supplier of suppliers" [value]="supplier.supplierId">
+            {{ supplier.supplierName }}
+          </option>
+        </select>
+      </div>
+      
+      <!-- Giá bán -->
+      <div class="form-group">
+        <label for="price">Giá bán:</label>
+        <input type="number" id="price" [(ngModel)]="product.price" name="price" required />
+      </div>
+      
+      <!-- Số lượng tồn kho -->
+      <div class="form-group">
+        <label for="stockQuantity">Số lượng tồn kho:</label>
+        <input type="number" id="stockQuantity" [(ngModel)]="product.stockQuantity" name="stockQuantity" required />
+      </div>
+      
+      <!-- Ghi chú -->
+      <div class="form-group">
+        <label for="notes">Ghi chú:</label>
+        <textarea id="notes" [(ngModel)]="product.notes" name="notes"></textarea>
+      </div>
+      
+      <!-- Giá nhập -->
+      <div class="form-group">
+        <label for="importPrice">Giá nhập:</label>
+        <input type="number" id="importPrice" [(ngModel)]="product.importPrice" name="importPrice" required />
+      </div>
+      
+      <!-- Ngày nhập -->
+      <div class="form-group">
+        <label for="importDate">Ngày nhập:</label>
+        <input type="date" id="importDate" [(ngModel)]="product.importDate" name="importDate" required />
+      </div>
+
+      <!-- Nút Lưu và Hủy -->
+      <div class="form-actions">
+        <button type="submit" class="save-btn">Lưu sản phẩm</button>
+        <button type="button" class="cancel-btn" (click)="closeForm()">Hủy</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Danh sách sản phẩm -->
+  <div class="product-list">
+    <h2>Danh sách sản phẩm</h2>
+    <table class="styled-table">
+      <thead>
+        <tr>
+          <th>Tên SP</th>
+          <th>Danh mục</th>
+          <th>NPP</th>
+          <th>Giá bán</th>
+          <th>SLTK</th>
+          <th>Giá nhập</th>
+          <th>Ngày nhập</th>
+          <th>Hành động</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let product of pagedProducts">
+          <td>{{ product.productName }}</td>
+          <td>{{ product.category.categoryName }}</td>
+          <td>{{ product.supplier.supplierName }}</td>
+          <td>{{ product.price | number:'1.0-0' }}</td>
+          <td>{{ product.stockQuantity }}</td>
+          <td>{{ product.importPrice }}</td>
+          <td>{{ product.importDate }}</td>
+          <td>
+            <button (click)="editProduct(product)" class="edit-btn">Cập nhật</button>
+            <button (click)="deleteProduct(product.productId)" class="delete-btn">Xóa</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="pagination" *ngIf="totalPages > 1" style="margin-top: 10px;">
+      <button (click)="changePage(currentPage - 1)" [disabled]="currentPage === 1">Trước</button>
+    
+      <button *ngFor="let page of [].constructor(totalPages); let i = index"
+              (click)="changePage(i + 1)"
+              [disabled]="currentPage === i + 1">
+        {{ i + 1 }}
+      </button>
+    
+      <button (click)="changePage(currentPage + 1)" [disabled]="currentPage === totalPages">Tiếp</button>
+    </div>
+  </div>
+</div>

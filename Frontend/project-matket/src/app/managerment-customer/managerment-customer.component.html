@@ -1,0 +1,67 @@
+<div class="customer-management">
+  <div class="customer-form" *ngIf="selectedCustomer">
+    <h3>{{ selectedCustomer.customerId ? 'Chỉnh sửa' : 'Thêm mới' }} Khách hàng</h3>
+    <div class="form-row">
+      <div class="form-group">
+        <label for="name">Tên khách hàng</label>
+        <input type="text" id="name" class="form-control" [(ngModel)]="selectedCustomer.name">
+      </div>
+      <div class="form-group">
+        <label for="phone">Số điện thoại</label>
+        <input type="text" id="phone" class="form-control" [(ngModel)]="selectedCustomer.phone">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label for="point">Điểm tích lũy</label>
+        <input type="number" id="point" class="form-control" [(ngModel)]="selectedCustomer.point" readonly style="width: 10%; text-align: center;">
+      </div>
+    </div>
+    <div class="form-actions">
+      <button class="action-btn cancel-btn" (click)="selectedCustomer = null">Hủy bỏ</button>
+      <button class="action-btn save-btn" (click)="updateCustomer()">Lưu thông tin</button>
+    </div>
+  </div>
+
+  <!-- Customer Table -->
+  <div class="customer-table-container">
+    <h2>Quản lý Khách hàng</h2>
+    <table class="customer-table">
+      <thead>
+        <tr>
+          <th>Tên khách hàng</th>
+          <th>Số điện thoại</th>
+          <th>Điểm tích lũy</th>
+          <th>Thao tác</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let customer of pagedCustomers">
+          <td>{{ customer.name }}</td>
+          <td>{{ customer.phone }}</td>
+          <td class="point-display">{{ customer.point }} điểm</td>
+          <td>
+            <div class="table-actions">
+              <button class="edit-btn" (click)="selectCustomer(customer)"> Chỉnh sửa
+                <i class="fas fa-edit"></i>
+              </button>
+              <button class="delete-btn" (click)="deleteCustomer(customer.customerId)">Xóa
+                <i class="fas fa-trash"></i>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="pagination" *ngIf="totalPages > 1" style="margin-top: 10px;">
+      <button (click)="changePage(currentPage - 1)" [disabled]="currentPage === 1">Trước</button>
+
+      <button *ngFor="let page of [].constructor(totalPages); let i = index" (click)="changePage(i + 1)"
+        [disabled]="currentPage === i + 1">
+        {{ i + 1 }}
+      </button>
+
+      <button (click)="changePage(currentPage + 1)" [disabled]="currentPage === totalPages">Tiếp</button>
+    </div>
+  </div>
+</div>

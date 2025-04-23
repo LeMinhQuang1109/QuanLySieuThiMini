@@ -1,0 +1,39 @@
+<nav *ngIf="isLoggedIn()">
+  <ul>
+    <li *ngIf="!isLoggedIn()"><a routerLink="/login" routerLinkActive="active">ĐĂNG NHẬP</a></li>
+    <li *ngIf="isAdmin()">
+      <a routerLink="/productmanagement">QUẢN LÝ SẢN PHẨM</a>
+    </li>
+    <li *ngIf="isAdmin()">
+      <a routerLink="/customer" routerLinkActive="active">QUẢN LÝ KHÁCH HÀNG</a>
+    </li>
+
+    <li><a routerLink="/product" routerLinkActive="active">SẢN PHẨM</a></li>
+    <!-- <li><a routerLink="/category" routerLinkActive="active">DANH MỤC</a></li> -->
+    <li class="dropdown" (mouseenter)="showDropdown = true" (mouseleave)="showDropdown = false">
+      <a href="javascript:void(0)" class="no-click">DANH MỤC</a>
+      <ul class="dropdown-menu" *ngIf="showDropdown">
+        <li *ngFor="let category of categories">
+          <a [routerLink]="['/category', category.categoryId]">{{ category.categoryName }}</a>
+        </li>
+      </ul>
+    </li>
+    <!-- <li><a routerLink="/supplier" routerLinkActive="active">NHÀ CUNG CẤP</a></li> -->
+    <li>
+      <a href="javascript:void(0)" class="no-click">NHÀ PHÂN PHỐI</a>
+      <ul class="dropdown-menu">
+        <li *ngFor="let supplier of suppliers">
+          <a [routerLink]="['/supplier', supplier.supplierId]">{{ supplier.supplierName }}</a>
+        </li>
+      </ul>
+    </li>
+    <li><a routerLink="/cart" routerLinkActive="active">THANH TOÁN</a></li>
+    <li><a routerLink="/find-order" routerLinkActive="active">HÓA ĐƠN</a></li>
+    <li><a (click)="logout()">ĐĂNG XUẤT</a></li>
+
+
+  </ul>
+</nav>
+
+
+<router-outlet></router-outlet>

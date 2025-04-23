@@ -1,0 +1,48 @@
+<div class="home-container">
+  <!-- Search Section -->
+  <section class="search-bar" aria-label="Product search">
+    <input
+      type="text"
+      [(ngModel)]="productName"
+      placeholder="Tên sản phẩm"
+      aria-label="Product name"
+    />
+    <select [(ngModel)]="selectedCategory" aria-label="Product category">
+      <option [value]="null">Tất cả danh mục</option>
+      <option *ngFor="let category of Categorys" [value]="category.categoryId">
+        {{ category.categoryName }}
+      </option>
+    </select>
+    <button (click)="searchProduct()" aria-label="Search products">Tìm kiếm</button>
+  </section>
+
+  <!-- Main Content -->
+  <div class="layout">
+    <!-- Navigation Sidebar -->
+    <nav class="sidebar" aria-label="Product categories">
+      <ul>
+        <li *ngFor="let category of Categorys">
+          <a [routerLink]="['/category', category.categoryId]" routerLinkActive="active">
+            {{ category.categoryName }}
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- Product Listing -->
+    <main class="product-list">
+      <article *ngFor="let product of SearchProduct" class="product-item">
+        <h3>{{ product.productName }}</h3>
+        <p>Giá: {{ product.price | currency }}</p>
+        <button (click)="addProductToCart(product)" aria-label="Add to cart">Thêm vào giỏ</button>
+      </article>
+    </main>
+  </div>
+
+  <!-- Pagination Controls -->
+  <div class="pagination-controls" *ngIf="SearchProduct.length > 0">
+    <button *ngIf="currentPage > 1" (click)="goToPage(currentPage - 1)" aria-label="Previous page">Trang trước</button>
+    <span>Trang {{ currentPage }} / {{ totalPages }}</span>
+    <button *ngIf="currentPage < totalPages" (click)="goToPage(currentPage + 1)" aria-label="Next page">Trang sau</button>
+  </div>
+</div>

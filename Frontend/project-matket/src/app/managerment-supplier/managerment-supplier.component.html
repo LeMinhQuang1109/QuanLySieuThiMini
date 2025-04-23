@@ -1,0 +1,78 @@
+<div class="supplier-management">
+
+  <!-- Nút Thêm nhà phân phối & Xem sản phẩm -->
+  <div class="add-supplier-btn">
+    <button (click)="goToProduct()" style="background-color: #17a2b8;margin-right: 10px">Xem sản phẩm</button>
+    <button (click)="goToCategory()" style="background-color: #17a2b8;margin-right: 10px  ;">Xem danh mục</button>
+    <button (click)="resetForm()" style="background-color: #28a745;">Thêm nhà phân phối</button>
+
+  </div>
+
+  <!-- Form thêm/sửa nhà phân phối -->
+  <div class="supplier-form" *ngIf="showForm">
+    <h2>{{ isEdit ? 'Cập nhật nhà phân phối' : 'Thêm nhà phân phối mới' }}</h2>
+    <form (ngSubmit)="onSubmit()" #supplierForm="ngForm">
+      <div class="form-group">
+        <label for="supplierName">Tên nhà phân phối</label>
+        <input type="text" id="supplierName" name="supplierName" [(ngModel)]="supplier.supplierName" required />
+      </div>
+      <div class="form-group">
+        <label for="phoneNumber">Số điện thoại</label>
+        <input type="text" id="phoneNumber" name="phoneNumber" [(ngModel)]="supplier.phoneNumber" required />
+      </div>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" [(ngModel)]="supplier.email" required />
+      </div>
+      <div class="form-group">
+        <label for="address">Địa chỉ</label>
+        <textarea id="address" name="address" [(ngModel)]="supplier.address" required></textarea>
+      </div>
+      <div class="form-actions">
+        <button type="submit" class="save-btn">{{ isEdit ? 'Cập nhật' : 'Lưu nhà phân phối' }}</button>
+        <button type="button" class="cancel-btn" (click)="cancelEdit()">Hủy</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Danh sách nhà phân phối -->
+  <div class="supplier-list">
+    <h2>Danh sách nhà phân phối</h2>
+    <table class="styled-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Tên</th>
+          <th>SĐT</th>
+          <th>Email</th>
+          <th>Địa chỉ</th>
+          <th>Hành động</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let supplier of pagedSupplier">
+          <td>{{ supplier.supplierId }}</td>
+          <td>{{ supplier.supplierName }}</td>
+          <td>{{ supplier.phoneNumber }}</td>
+          <td>{{ supplier.email }}</td>
+          <td>{{ supplier.address }}</td>
+          <td>
+            <button class="edit-btn" (click)="editSupplier(supplier)">Sửa</button>
+            <button class="delete-btn" (click)="deleteSupplier(supplier.supplierId)">Xóa</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="pagination" *ngIf="totalPages > 1" style="margin-top: 10px;">
+      <button (click)="changePage(currentPage - 1)" [disabled]="currentPage === 1">Trước</button>
+    
+      <button *ngFor="let page of [].constructor(totalPages); let i = index"
+              (click)="changePage(i + 1)"
+              [disabled]="currentPage === i + 1">
+        {{ i + 1 }}
+      </button>
+    
+      <button (click)="changePage(currentPage + 1)" [disabled]="currentPage === totalPages">Tiếp</button>
+    </div>
+  </div>
+</div>

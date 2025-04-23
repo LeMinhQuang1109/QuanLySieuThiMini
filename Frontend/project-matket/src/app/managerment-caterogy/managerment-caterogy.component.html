@@ -1,0 +1,69 @@
+<div class="category-management">
+
+  <!-- Nút Thêm danh mục -->
+  <div class="add-category-btn">
+    <button (click)="goToProduct()" style="margin-right: 10px; background-color: #17a2b8">Xem sản phẩm</button>
+    <button (click)="showAddForm = true" style="margin-right: 10px; background-color: #28a745;">Thêm danh mục</button>
+    <button (click)="goToSupplier()" style="background-color: #17a2b8;">Xem nhà phân phối </button>
+  </div>
+
+  <!-- Form thêm/sửa danh mục -->
+  <div class="category-form" *ngIf="showAddForm">
+    <h2>{{ isEdit ? 'Cập nhật danh mục' : 'Thêm danh mục mới' }}</h2>
+    <form (ngSubmit)="onSubmit()">
+
+      <!-- Tên danh mục -->
+      <div class="form-group">
+        <label for="categoryName">Tên danh mục:</label>
+        <input type="text" id="categoryName" [(ngModel)]="category.categoryName" name="categoryName" required />
+      </div>
+
+      <!-- Mô tả -->
+      <div class="form-group">
+        <label for="description">Mô tả:</label>
+        <textarea id="description" [(ngModel)]="category.description" name="description"></textarea>
+      </div>
+
+      <!-- Nút Lưu và Hủy -->
+      <div class="form-actions">
+        <button type="submit" class="save-btn">{{ isEdit ? 'Cập nhật' : 'Lưu danh mục' }}</button>
+        <button type="button" class="cancel-btn" (click)="cancelEdit()">Hủy</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Danh sách danh mục -->
+  <div class="category-list">
+    <h2>Danh sách danh mục</h2>
+    <table class="styled-table">
+      <thead>
+        <tr>
+          <th>Tên danh mục</th>
+          <th>Mô tả</th>
+          <th>Hành động</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let category of pagedCategory">
+          <td>{{ category.categoryName }}</td>
+          <td>{{ category.description}}</td>
+          <td>
+            <button (click)="editCategory(category)" class="edit-btn">Cập nhật</button>
+            <button (click)="deleteCategory(category.categoryId)" class="delete-btn">Xóa</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="pagination" *ngIf="totalPages > 1" style="margin-top: 10px;">
+      <button (click)="changePage(currentPage - 1)" [disabled]="currentPage === 1">Trước</button>
+
+      <button *ngFor="let page of [].constructor(totalPages); let i = index" (click)="changePage(i + 1)"
+        [disabled]="currentPage === i + 1">
+        {{ i + 1 }}
+      </button>
+
+      <button (click)="changePage(currentPage + 1)" [disabled]="currentPage === totalPages">Tiếp</button>
+    </div>
+
+  </div>
+</div>

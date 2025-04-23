@@ -1,0 +1,48 @@
+<div class="home-container">
+  <!-- Tìm kiếm đơn hàng -->
+  <div class="search-bar">
+    <input
+      type="text"
+      [(ngModel)]="find"
+      placeholder="Nhập số điện thoại"
+    />
+    <button (click)="findOrder()">Tìm kiếm</button>
+  </div>
+
+  <!-- Danh sách hóa đơn -->
+  <div class="bills-container">
+    <div class="bill-card" *ngFor="let bill of bills">
+      <div class="bill-info">
+        <p class="bill-date">{{bill.day}}</p>
+        <p class="bill-total">{{bill.totalBill}} VNĐ</p>
+      </div>
+      <button class="detail-button" (click)="getBillDetail(bill.billId)">Chi tiết</button>
+    </div>
+
+    <!-- Optional: Empty state -->
+    <div class="no-bills" *ngIf="bills?.length === 0">
+      Không tìm thấy hóa đơn nào
+    </div>
+  </div>
+
+  <!-- Modal hiển thị chi tiết hóa đơn -->
+  <div class="modal" *ngIf="selectedBillDetail">
+    <div class="modal-content">
+      <h2>Chi tiết hóa đơn</h2>
+      <div>
+        <p><strong>Bill ID:</strong> {{ selectedBillDetail.billId }}</p>
+        <p><strong>Customer Name:</strong> {{ selectedBillDetail.customerName }}</p>
+        <p><strong>Ngày:</strong> {{ selectedBillDetail.day | date: 'dd/MM/yyyy HH:mm' }}</p>
+        <p><strong>Tổng tiền:</strong> {{ selectedBillDetail.totalBill }} VNĐ</p>
+        <h3>Chi tiết sản phẩm:</h3>
+        <ul>
+          <li *ngFor="let detail of selectedBillDetail.details">
+            <p><strong>Tên Sản phẩm:</strong> {{detail.productName }}</p>
+            <p><strong>Số lượng:</strong> {{ detail.quantity }}</p>
+          </li>
+        </ul>
+      </div>
+      <button (click)="closeModal()">Đóng</button>
+    </div>
+  </div>
+</div>
