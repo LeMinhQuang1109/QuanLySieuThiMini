@@ -9,19 +9,22 @@ import { ProductserviceService } from '../Service/product_service/productservice
   styleUrl: './find-order.component.css'
 })
 export class FindOrderComponent {
-  find : string = "";
-  customer : any;
-  bills : any = [];
-  selectedBillDetail: any = null; 
+  find: string = "";
+  customer: any;
+  bills: any = [];
+  selectedBillDetail: any = null;
+  startDate: string = '';
+  endDate: string = '';
+  totalRevenue: number | null = null;
 
-  constructor(private customerService : CustomeserviceService,private billService : OrderserviceService, private productService: ProductserviceService){}
+  constructor(private customerService: CustomeserviceService, private billService: OrderserviceService, private productService: ProductserviceService) { }
 
   findOrder() {
     if (this.find) {
       this.customerService.CheckCustomer(this.find).subscribe(
         (response) => {
           if (response) {
-            if(this.find){
+            if (this.find) {
               this.customerService.getCustomer(this.find).subscribe(
                 (customerResponse) => {
                   this.customer = customerResponse
@@ -62,14 +65,14 @@ export class FindOrderComponent {
             quantity: item.quantity,
             productName: '' // Khởi tạo tên sản phẩm
           }));
-  
+
           // Gán thông tin hóa đơn và chi tiết sản phẩm
           this.selectedBillDetail = {
             ...bill,
             details: details,
             customerName: ''
           };
-  
+
           // Gọi API để lấy thông tin khách hàng
           this.customerService.getCustomerByID(bill.customerId).subscribe(
             (customerData: any) => {
@@ -86,7 +89,7 @@ export class FindOrderComponent {
               (productData: any) => {
                 detail.productName = productData.productName;
                 console.log(detail.productName);
-                
+
               },
               (error) => {
                 console.error('Lỗi khi lấy thông tin sản phẩm:', error);
@@ -104,6 +107,24 @@ export class FindOrderComponent {
   }
 
   closeModal(): void {
-    this.selectedBillDetail = null; 
+    this.selectedBillDetail = null;
+  }
+
+  getRevenue(): void {
+    if (!this.startDate || !this.endDate) {
+      alert("Vui lòng chọn đầy đủ ngày bắt đầu và kết thúc.");
+      return;
+    }
+  
+    // Gọi hàm API trong billService
+    this.billService.getDoanhThu(this.startDate, this.endDate).subscribe({
+      next: (revenue: number) => {
+        this.totalRevenue = revenue;
+      },
+      error: (error) => {
+        console.error('Lỗi khi tính doanh thu:', error);
+        alert("Lỗi khi tính doanh thu");
+      }
+    });
   }
 }

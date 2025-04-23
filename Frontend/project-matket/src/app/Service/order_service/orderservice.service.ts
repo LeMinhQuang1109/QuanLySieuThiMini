@@ -31,4 +31,8 @@ export class OrderserviceService {
     const body = {billId};
     return this.http.post(this.apiGetBillDetail,body);
   }
+
+  getDoanhThu(startDate: string, endDate: string) {
+    return this.http.get<number>(`http://localhost:8081/getDoanhThu?startDate=${startDate}&endDate=${endDate}`);
+  }
 }

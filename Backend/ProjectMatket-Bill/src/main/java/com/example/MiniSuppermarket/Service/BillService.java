@@ -1,8 +1,10 @@
 package com.example.MiniSuppermarket.Service;
 
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-// import java.util.ArrayList;
 import java.util.List;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,5 +47,26 @@ public class BillService {
 
     public List<Bill> getBills(int customerId) {
         return billRepository.findByCustomerId(customerId);
+    }
+
+    public double tinhDoanhThu(String startDate, String endDate) {
+        DateTimeFormatter formatter = DateTimeFormatter.RFC_1123_DATE_TIME;
+        
+        ZonedDateTime start = ZonedDateTime.parse(startDate + "T00:00:00Z");
+        ZonedDateTime end = ZonedDateTime.parse(endDate + "T23:59:59Z");
+
+        List<Bill> allBills = billRepository.findAll();
+
+        return allBills.stream()
+                .filter(bill -> {
+                    try {
+                        ZonedDateTime billDate = ZonedDateTime.parse(bill.getDay(), formatter);
+                        return !billDate.isBefore(start) && !billDate.isAfter(end);
+                    } catch (Exception e) {
+                        return false;
+                    }
+                })
+                .mapToDouble(Bill::getTotalBill)
+                .sum();
     }
 }

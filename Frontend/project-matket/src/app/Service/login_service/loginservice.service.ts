@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
   providedIn: 'root'
 })
 export class LoginService {
+  [x: string]: any;
   private apiUrl = 'http://localhost:8089/api/login/authenticate';
 
   constructor(private http: HttpClient, private router: Router) {}

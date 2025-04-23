@@ -1,11 +1,21 @@
 <div class="home-container">
+  <!-- Tính doanh thu -->
+  <div class="revenue-bar">
+    <label for="start">Từ ngày:</label>
+    <input id="start" type="date" [(ngModel)]="startDate" />
+
+    <label for="end">Đến ngày:</label>
+    <input id="end" type="date" [(ngModel)]="endDate" />
+
+    <button (click)="getRevenue()">Tính doanh thu</button>
+
+    <div *ngIf="totalRevenue !== null">
+      <h3>Doanh thu: {{ totalRevenue | number }} VNĐ</h3>
+    </div>
+  </div>
   <!-- Tìm kiếm đơn hàng -->
   <div class="search-bar">
-    <input
-      type="text"
-      [(ngModel)]="find"
-      placeholder="Nhập số điện thoại"
-    />
+    <input type="text" [(ngModel)]="find" placeholder="Nhập số điện thoại" />
     <button (click)="findOrder()">Tìm kiếm</button>
   </div>
 

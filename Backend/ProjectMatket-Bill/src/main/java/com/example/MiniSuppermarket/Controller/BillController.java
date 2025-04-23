@@ -11,8 +11,10 @@ import com.example.MiniSuppermarket.Entity.BillDetail;
 import com.example.MiniSuppermarket.Service.BillService;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @CrossOrigin("http://localhost:4200/")
@@ -40,4 +42,9 @@ public class BillController {
         return billService.getBills(bill.getCustomerId());
     }
 
+    @GetMapping("/getDoanhThu")
+    public String getDoanhThu(@RequestParam String startDate, @RequestParam String endDate) {
+        double doanhThu = billService.tinhDoanhThu(startDate, endDate);
+    return String.format("%.0f", doanhThu);
+    }
 }

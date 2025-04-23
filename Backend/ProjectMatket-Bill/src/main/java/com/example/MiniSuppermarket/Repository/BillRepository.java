@@ -13,4 +13,6 @@ public interface BillRepository extends JpaRepository<Bill,Integer> {
     Bill findByBillId(int billId);
 
     List<Bill> findByCustomerId(int customerId);
+
+    List<Bill> findByDayBetween(String startDate, String endDate);
 }
