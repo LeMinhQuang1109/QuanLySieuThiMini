@@ -15,6 +15,8 @@ public class Bill {
     private int customerId;
     private int totalBill;
     private String day;
+    private String paymentMethod; 
+
     public int getbillId() {
         return billId;
     }
@@ -38,6 +40,14 @@ public class Bill {
     }
     public void setDay(String day) {
         this.day = day;
+    }
+
+    public String getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(String paymentMethod) {
+        this.paymentMethod = paymentMethod;
     }
 
 }

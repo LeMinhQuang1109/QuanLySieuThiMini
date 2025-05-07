@@ -24,6 +24,10 @@ public class BillController {
 
     @PostMapping("/saveBill")
     public Bill saveBill(@RequestBody Bill bill) {
+        // Đảm bảo paymentMethod được gửi từ frontend
+        if (bill.getPaymentMethod() == null) {
+            bill.setPaymentMethod("cash"); // Mặc định nếu không có
+        }
         return billService.saveBill(bill);
     }
 
@@ -45,6 +49,6 @@ public class BillController {
     @GetMapping("/getDoanhThu")
     public String getDoanhThu(@RequestParam String startDate, @RequestParam String endDate) {
         double doanhThu = billService.tinhDoanhThu(startDate, endDate);
-    return String.format("%.0f", doanhThu);
+        return String.format("%.0f", doanhThu);
     }
 }

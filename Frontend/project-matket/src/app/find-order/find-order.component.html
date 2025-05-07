@@ -43,12 +43,16 @@
         <p><strong>Bill ID:</strong> {{ selectedBillDetail.billId }}</p>
         <p><strong>Customer Name:</strong> {{ selectedBillDetail.customerName }}</p>
         <p><strong>Ngày:</strong> {{ selectedBillDetail.day | date: 'dd/MM/yyyy HH:mm' }}</p>
-        <p><strong>Tổng tiền:</strong> {{ selectedBillDetail.totalBill }} VNĐ</p>
+        <p><strong>Phương thức thanh toán:</strong> 
+          {{ getPaymentMethodDisplay(selectedBillDetail.paymentMethod) }}
+        </p>
         <h3>Chi tiết sản phẩm:</h3>
+        
         <ul>
           <li *ngFor="let detail of selectedBillDetail.details">
             <p><strong>Tên Sản phẩm:</strong> {{detail.productName }}</p>
             <p><strong>Số lượng:</strong> {{ detail.quantity }}</p>
+            <p><strong>Tổng tiền:</strong> {{ selectedBillDetail.totalBill }} VNĐ</p>
           </li>
         </ul>
       </div>

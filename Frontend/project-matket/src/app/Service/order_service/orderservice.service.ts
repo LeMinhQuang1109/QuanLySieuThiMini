@@ -12,8 +12,8 @@ export class OrderserviceService {
   private apiGetBillDetail = "http://localhost:8081/getBillDetailByBillId"
   constructor( private http: HttpClient) { }
   
-  addBill(customerId : number,day : string,totalBill: number){
-    const body = {customerId,day,totalBill};
+  addBill(customerId : number,day : string,totalBill: number, paymentMethod: string){
+    const body = {customerId,day,totalBill,paymentMethod};
     return this.http.post(this.apiSaveBill,body);
   }
 

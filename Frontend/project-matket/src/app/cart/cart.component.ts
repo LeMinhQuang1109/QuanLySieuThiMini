@@ -19,6 +19,7 @@ export class CartComponent implements OnInit {
   nameCustomer: string | null = null;
   billDetails: any = [];
   data: any;
+  paymentMethod: string = 'cash';
 
   constructor(private customerservice: CustomeserviceService, private order_service: OrderserviceService) { }
 
@@ -159,7 +160,7 @@ export class CartComponent implements OnInit {
   }
 
   saveBill(customerId: number, day: string, totalBill: number) {
-    this.order_service.addBill(customerId, day, totalBill).subscribe((res) => {
+    this.order_service.addBill(customerId, day, totalBill, this.paymentMethod).subscribe((res) => {
       this.data = res;
 
       for (let i = 0; i < this.selectedProducts.length; i++) {
@@ -176,6 +177,4 @@ export class CartComponent implements OnInit {
       });
     });
   }
-
-
 }

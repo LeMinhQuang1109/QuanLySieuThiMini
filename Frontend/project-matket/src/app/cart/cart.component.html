@@ -20,12 +20,25 @@
   <button class="btn-confirm" (click)="confirmPurchase()">Xác nhận mua hàng</button>
 </div>
 
-<!-- Modal xác nhận thông tin khách hàng -->
+<!-- Trong modal xác nhận thông tin khách hàng -->
 <div class="modal" *ngIf="showUserFormModal">
   <div class="modal-content">
     <h3>Xác nhận thông tin khách hàng</h3>
-    <input type="text" [(ngModel)]="phone" placeholder="Nhập số điện thoại" />
-    <button (click)="checkCustomer()">Kiểm tra</button>
+    
+    <!-- Phần nhập số điện thoại -->
+    <input type="text" [(ngModel)]="phone" placeholder="Nhập số điện thoại"/>
+    
+    <!-- Phần chọn phương thức thanh toán -->
+    <div class="payment-method">
+      <label>Phương thức thanh toán:</label>
+      <select [(ngModel)]="paymentMethod">
+        <option value="cash">Tiền mặt</option>
+        <option value="card">Thẻ</option>
+        <option value="transfer">Chuyển khoản</option>
+      </select>
+    </div>
+    
+    <button (click)="checkCustomer()">Xác nhận</button>
     <button (click)="showUserFormModal = false">Đóng</button>
   </div>
 </div>

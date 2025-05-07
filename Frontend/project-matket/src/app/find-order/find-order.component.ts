@@ -127,4 +127,13 @@ export class FindOrderComponent {
       }
     });
   }
+
+  getPaymentMethodDisplay(method: string): string {
+    switch(method) {
+      case 'cash': return 'Tiền mặt';
+      case 'card': return 'Thẻ';
+      case 'transfer': return 'Chuyển khoản';
+      default: return method;
+    }
+  }
 }
