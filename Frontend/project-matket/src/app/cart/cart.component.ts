@@ -10,17 +10,17 @@ import { log } from 'console';
 })
 export class CartComponent implements OnInit {
   selectedProducts: any[] = [];
-  phone : string | null= null;
-  phonenew : string | null= null;
+  phone: string | null = null;
+  phonenew: string | null = null;
   point!: number;
   showUserFormModal: boolean = false;
   showformNewCustomer: boolean = false;
   idcustomer!: number;
-  nameCustomer : string | null = null;
-  billDetails : any = [];
-  data : any;
+  nameCustomer: string | null = null;
+  billDetails: any = [];
+  data: any;
 
-  constructor(private customerservice: CustomeserviceService, private order_service: OrderserviceService) {}
+  constructor(private customerservice: CustomeserviceService, private order_service: OrderserviceService) { }
 
   ngOnInit(): void {
     const cartData = localStorage.getItem('cart');
@@ -43,13 +43,13 @@ export class CartComponent implements OnInit {
     this.saveCart();
   }
 
-  
+
   checkCustomer() {
-    if (this.phone) {      
+    if (this.phone) {
       this.customerservice.CheckCustomer(this.phone).subscribe(
         (response) => {
           if (response) {
-            if(this.phone){
+            if (this.phone) {
               this.customerservice.getCustomer(this.phone).subscribe(
                 (customerResponse) => {
                   console.log(customerResponse);
@@ -60,16 +60,20 @@ export class CartComponent implements OnInit {
                   this.idcustomer = customerResponse.customerId;
                   console.log(customerResponse.point);
                   let totalprice = 0;
-                  for(let i =0;i<this.selectedProducts.length;i++){
-                    totalprice += +this.selectedProducts[i].price * +this.selectedProducts[i].quantity;
+                  for (let i = 0; i < this.selectedProducts.length; i++) {
+                    // totalprice += +this.selectedProducts[i].price * +this.selectedProducts[i].quantity;
+                    const product = this.selectedProducts[i];
+                    const quantity = +product.quantity;
+                    const unitPrice = product.discountPrice && product.discountPrice > 0 ? +product.discountPrice : +product.price;
+                    totalprice += unitPrice * quantity;
                     console.log(+this.selectedProducts[i].price);
                     console.log(+this.selectedProducts[i].quantity);
                     console.log(totalprice);
                   }
-                  const day : Date = new Date();
+                  const day: Date = new Date();
                   console.log(day.toUTCString());
-                  this.saveBill(this.idcustomer,day.toUTCString(),totalprice);
-    
+                  this.saveBill(this.idcustomer, day.toUTCString(), totalprice);
+
                   this.customerservice.updatePointCustomer(this.idcustomer, this.point).subscribe(
                     (updateResponse) => {
                       console.log('Đã cập nhật điểm');
@@ -102,7 +106,7 @@ export class CartComponent implements OnInit {
       alert("Vui lòng nhập đầy đủ thông tin");
     }
   }
-  
+
   createNewCustomer() {
     if (this.phonenew && this.nameCustomer) {
       this.customerservice.CheckCustomer(this.phonenew).subscribe()
@@ -117,15 +121,19 @@ export class CartComponent implements OnInit {
           const pointsToAdd = totalQuantity * 100;
           this.point += pointsToAdd;
           let totalprice = 0;
-          for(let i =0;i<this.selectedProducts.length;i++){
-            totalprice += +this.selectedProducts[i].price * +this.selectedProducts[i].quantity;
+          for (let i = 0; i < this.selectedProducts.length; i++) {
+            // totalprice += +this.selectedProducts[i].price * +this.selectedProducts[i].quantity;
+            const product = this.selectedProducts[i];
+            const quantity = +product.quantity;
+            const unitPrice = product.discountPrice && product.discountPrice > 0 ? +product.discountPrice : +product.price;
+            totalprice += unitPrice * quantity;
             console.log(+this.selectedProducts[i].price);
             console.log(+this.selectedProducts[i].quantity);
             console.log(totalprice);
           }
-          const day : Date = new Date();
+          const day: Date = new Date();
           console.log(day.toUTCString());
-          this.saveBill(this.idcustomer,day.toUTCString(),totalprice);
+          this.saveBill(this.idcustomer, day.toUTCString(), totalprice);
           this.customerservice.updatePointCustomer(this.idcustomer, this.point).subscribe(
             (updateResponse) => {
               console.log('Đã cập nhật điểm cho khách hàng mới');
@@ -169,5 +177,5 @@ export class CartComponent implements OnInit {
     });
   }
 
- 
+
 }

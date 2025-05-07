@@ -59,6 +59,8 @@ public class ProductService {
             existingProduct.setNotes(productDetails.getNotes());
             existingProduct.setImportPrice(productDetails.getImportPrice());
             existingProduct.setImportDate(productDetails.getImportDate());
+            existingProduct.setDiscountPrice(productDetails.getDiscountPrice());
+            existingProduct.setDiscountDate(productDetails.getDiscountDate());
 
             return productRespository.save(existingProduct);
         } else {
@@ -66,7 +68,7 @@ public class ProductService {
         }
     }
 
-    public Optional<Product> getProductByid(int idProduct){
+    public Optional<Product> getProductByid(int idProduct) {
         return productRespository.findById(idProduct);
     }
 }

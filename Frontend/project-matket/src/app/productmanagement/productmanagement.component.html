@@ -13,13 +13,13 @@
   <div class="product-form" *ngIf="showAddForm">
     <h2>Thêm sản phẩm mới</h2>
     <form (ngSubmit)="saveProduct()">
-      
+
       <!-- Tên sản phẩm -->
       <div class="form-group">
         <label for="productName">Tên sản phẩm:</label>
         <input type="text" id="productName" [(ngModel)]="product.productName" name="productName" required />
       </div>
-      
+
       <!-- Danh mục -->
       <div class="form-group">
         <label for="categoryId">Danh mục:</label>
@@ -29,7 +29,7 @@
           </option>
         </select>
       </div>
-      
+
       <!-- Nhà cung cấp -->
       <div class="form-group">
         <label for="supplierId">Nhà cung cấp:</label>
@@ -39,35 +39,47 @@
           </option>
         </select>
       </div>
-      
+
       <!-- Giá bán -->
       <div class="form-group">
         <label for="price">Giá bán:</label>
         <input type="number" id="price" [(ngModel)]="product.price" name="price" required />
       </div>
-      
+
       <!-- Số lượng tồn kho -->
       <div class="form-group">
         <label for="stockQuantity">Số lượng tồn kho:</label>
         <input type="number" id="stockQuantity" [(ngModel)]="product.stockQuantity" name="stockQuantity" required />
       </div>
-      
+
       <!-- Ghi chú -->
       <div class="form-group">
         <label for="notes">Ghi chú:</label>
         <textarea id="notes" [(ngModel)]="product.notes" name="notes"></textarea>
       </div>
-      
+
       <!-- Giá nhập -->
       <div class="form-group">
         <label for="importPrice">Giá nhập:</label>
         <input type="number" id="importPrice" [(ngModel)]="product.importPrice" name="importPrice" required />
       </div>
-      
+
       <!-- Ngày nhập -->
       <div class="form-group">
         <label for="importDate">Ngày nhập:</label>
         <input type="date" id="importDate" [(ngModel)]="product.importDate" name="importDate" required />
+      </div>
+
+      <!-- Giá khuyến mãi -->
+      <div class="form-group">
+        <label for="discountPrice">Giá khuyến mãi:</label>
+        <input type="number" id="discountPrice" [(ngModel)]="product.discountPrice" name="discountPrice" />
+      </div>
+
+      <!-- Ngày khuyến mãi -->
+      <div class="form-group">
+        <label for="discountDate">Ngày khuyến mãi:</label>
+        <input type="date" id="discountDate" [(ngModel)]="product.discountDate" name="discountDate" />
       </div>
 
       <!-- Nút Lưu và Hủy -->
@@ -91,6 +103,8 @@
           <th>SLTK</th>
           <th>Giá nhập</th>
           <th>Ngày nhập</th>
+          <th>Giá KM </th>
+          <th>Ngày KM </th>
           <th>Hành động</th>
         </tr>
       </thead>
@@ -103,6 +117,8 @@
           <td>{{ product.stockQuantity }}</td>
           <td>{{ product.importPrice }}</td>
           <td>{{ product.importDate }}</td>
+          <td>{{ product.discountPrice }}</td>
+          <td>{{ product.discountDate }}</td>
           <td>
             <button (click)="editProduct(product)" class="edit-btn">Cập nhật</button>
             <button (click)="deleteProduct(product.productId)" class="delete-btn">Xóa</button>
@@ -112,13 +128,12 @@
     </table>
     <div class="pagination" *ngIf="totalPages > 1" style="margin-top: 10px;">
       <button (click)="changePage(currentPage - 1)" [disabled]="currentPage === 1">Trước</button>
-    
-      <button *ngFor="let page of [].constructor(totalPages); let i = index"
-              (click)="changePage(i + 1)"
-              [disabled]="currentPage === i + 1">
+
+      <button *ngFor="let page of [].constructor(totalPages); let i = index" (click)="changePage(i + 1)"
+        [disabled]="currentPage === i + 1">
         {{ i + 1 }}
       </button>
-    
+
       <button (click)="changePage(currentPage + 1)" [disabled]="currentPage === totalPages">Tiếp</button>
     </div>
   </div>

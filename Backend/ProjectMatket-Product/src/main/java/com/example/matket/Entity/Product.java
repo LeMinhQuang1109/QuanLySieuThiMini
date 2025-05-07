@@ -50,6 +50,13 @@ public class Product {
     @Temporal(TemporalType.DATE)
     private Date importDate;
 
+    @Column(name = "DiscountPrice", precision = 10, scale = 2)
+    private BigDecimal discountPrice;
+
+    @Column(name = "DiscountDate")
+    @Temporal(TemporalType.DATE)
+    private Date discountDate;
+
     // Getters and Setters
     public int getProductId() {
         return productId;
@@ -122,4 +129,21 @@ public class Product {
     public void setImportDate(Date importDate) {
         this.importDate = importDate;
     }
+
+    public BigDecimal getDiscountPrice() {
+        return discountPrice;
+    }
+    
+    public void setDiscountPrice(BigDecimal discountPrice) {
+        this.discountPrice = discountPrice;
+    }
+    
+    public Date getDiscountDate() {
+        return discountDate;
+    }
+    
+    public void setDiscountDate(Date discountDate) {
+        this.discountDate = discountDate;
+    }
+    
 }

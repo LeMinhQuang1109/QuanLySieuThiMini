@@ -33,7 +33,18 @@
     <main class="product-list">
       <article *ngFor="let product of SearchProduct" class="product-item">
         <h3>{{ product.productName }}</h3>
-        <p>Giá: {{ product.price | currency }}</p>
+        <!-- <p>Giá: {{ product.price | currency }}</p> -->
+        <p *ngIf="product.discountPrice && product.discountPrice > 0">
+          <span style="text-decoration: line-through; color: gray;">
+            {{ product.price | currency }}
+          </span>
+          <span style="color: red; font-weight: bold;">
+            {{ product.discountPrice | currency }}
+          </span>
+        </p>
+        <p *ngIf="!product.discountPrice || product.discountPrice <= 0">
+          Giá: {{ product.price | currency }}
+        </p>
         <button (click)="addProductToCart(product)" aria-label="Add to cart">Thêm vào giỏ</button>
       </article>
     </main>

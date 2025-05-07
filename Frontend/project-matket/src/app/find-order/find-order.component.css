@@ -69,6 +69,7 @@ body {
   text-align: right;
 }
 
+
 /* Responsive design */
 @media (max-width: 768px) {
   .revenue-bar {

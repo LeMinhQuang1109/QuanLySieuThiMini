@@ -1,49 +1,42 @@
 <div class="cart">
-    <h2>Giỏ hàng</h2>
-    
-    <!-- Hiển thị các sản phẩm trong giỏ hàng -->
-    <div *ngFor="let product of selectedProducts; let i = index" class="cart-item">
-      <h3>{{ product.productName }}</h3>
-      <p>Số lượng: {{ product.quantity }}</p>
-      <input type="number" [(ngModel)]="product.quantity" min="1" />
-      <p>Thành tiền: {{ product.price * product.quantity | currency }}</p>
-      <button (click)="removeProduct(i)">Xóa</button>
-    </div>
-  
-    <!-- Nút xác nhận mua hàng -->
-    <button class="btn-confirm" (click)="confirmPurchase()">Xác nhận mua hàng</button>
+  <h2>Giỏ hàng</h2>
+
+  <!-- Hiển thị các sản phẩm trong giỏ hàng -->
+  <div *ngFor="let product of selectedProducts; let i = index" class="cart-item">
+    <h3>{{ product.productName }}</h3>
+    <p>Số lượng: {{ product.quantity }}</p>
+    <input type="number" [(ngModel)]="product.quantity" min="1" />
+    <!-- <p>Thành tiền: {{ product.price * product.quantity | currency }}</p> -->
+    <p *ngIf="product.discountPrice && product.discountPrice > 0">
+      Thành tiền: {{ product.discountPrice * product.quantity | currency }}
+    </p>
+    <p *ngIf="!product.discountPrice || product.discountPrice <= 0">
+      Thành tiền: {{ product.price * product.quantity | currency }}
+    </p>
+    <button (click)="removeProduct(i)">Xóa</button>
   </div>
-  
-  <!-- Modal xác nhận thông tin khách hàng -->
-  <div class="modal" *ngIf="showUserFormModal">
-    <div class="modal-content">
-      <h3>Xác nhận thông tin khách hàng</h3>
-      <input
-        type="text"
-        [(ngModel)]="phone"
-        placeholder="Nhập số điện thoại"
-      />
-      <button (click)="checkCustomer()">Kiểm tra</button>
-      <button (click)="showUserFormModal = false">Đóng</button>
-    </div>
+
+  <!-- Nút xác nhận mua hàng -->
+  <button class="btn-confirm" (click)="confirmPurchase()">Xác nhận mua hàng</button>
+</div>
+
+<!-- Modal xác nhận thông tin khách hàng -->
+<div class="modal" *ngIf="showUserFormModal">
+  <div class="modal-content">
+    <h3>Xác nhận thông tin khách hàng</h3>
+    <input type="text" [(ngModel)]="phone" placeholder="Nhập số điện thoại" />
+    <button (click)="checkCustomer()">Kiểm tra</button>
+    <button (click)="showUserFormModal = false">Đóng</button>
   </div>
-  
-  <!-- Modal tạo khách hàng mới -->
-  <div class="modal" *ngIf="showformNewCustomer">
-    <div class="modal-content">
-      <h3>Tạo khách hàng mới</h3>
-      <input
-        type="text"
-        [(ngModel)]="nameCustomer"
-        placeholder="Tên khách hàng"
-      />
-      <input
-        type="text"
-        [(ngModel)]="phonenew"
-        placeholder="Số điện thoại"
-      />
-      <button (click)="createNewCustomer()">Tạo mới</button>
-      <button (click)="showformNewCustomer = false">Hủy</button>
-    </div>
+</div>
+
+<!-- Modal tạo khách hàng mới -->
+<div class="modal" *ngIf="showformNewCustomer">
+  <div class="modal-content">
+    <h3>Tạo khách hàng mới</h3>
+    <input type="text" [(ngModel)]="nameCustomer" placeholder="Tên khách hàng" />
+    <input type="text" [(ngModel)]="phonenew" placeholder="Số điện thoại" />
+    <button (click)="createNewCustomer()">Tạo mới</button>
+    <button (click)="showformNewCustomer = false">Hủy</button>
   </div>
-  
+</div>
