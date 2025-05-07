@@ -16,7 +16,7 @@ public class LoginController {
     
     @Autowired
     private LoginService loginService;
-
+        
     @PostMapping("/authenticate")
     public Login authenticate(@RequestParam String username, 
                             @RequestParam String password) {

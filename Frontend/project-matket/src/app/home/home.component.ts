@@ -63,7 +63,7 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  // Tải tất cả sản phẩm mặc định
+
   loadDefaultProducts() {
     this.productservice.getproduct().subscribe((data: any) => {
       this.Products = data;
@@ -72,7 +72,7 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  // Tìm kiếm sản phẩm
+
   searchProduct() {
     const hasName = this.productName && this.productName.trim() !== '';
     const hasCategory = this.selectedCategory && this.selectedCategory !== 'null';
@@ -80,7 +80,7 @@ export class HomeComponent implements OnInit {
       this.productservice.SearchProduct(this.productName, this.selectedCategory).subscribe((data: any) => {
         this.Products = Array.isArray(data) ? data : [data];
         this.totalPages = Math.ceil(this.Products.length / this.pageSize);  // Tính tổng số trang
-        this.currentPage = 1;  // Reset về trang 1 khi tìm kiếm
+        this.currentPage = 1; 
         this.updatePagedProducts();
       });
     } else {
@@ -88,14 +88,12 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  // Cập nhật các sản phẩm hiển thị trên trang hiện tại
   updatePagedProducts() {
     const startIndex = (this.currentPage - 1) * this.pageSize;
     const endIndex = startIndex + this.pageSize;
     this.SearchProduct = this.Products.slice(startIndex, endIndex);
   }
 
-  // Chuyển đến trang tiếp theo hoặc trước đó
   goToPage(page: number) {
     if (page >= 1 && page <= this.totalPages) {
       this.currentPage = page;

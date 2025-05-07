@@ -5,7 +5,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +13,7 @@ import com.example.MiniSuppermarket.Entity.Bill;
 import com.example.MiniSuppermarket.Entity.BillDetail;
 import com.example.MiniSuppermarket.Repository.BillDetailRepository;
 import com.example.MiniSuppermarket.Repository.BillRepository;
+
 
 @Service
 public class BillService {
@@ -51,7 +51,7 @@ public class BillService {
 
     public double tinhDoanhThu(String startDate, String endDate) {
         DateTimeFormatter formatter = DateTimeFormatter.RFC_1123_DATE_TIME;
-        
+
         ZonedDateTime start = ZonedDateTime.parse(startDate + "T00:00:00Z");
         ZonedDateTime end = ZonedDateTime.parse(endDate + "T23:59:59Z");
 
