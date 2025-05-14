@@ -1,22 +1,35 @@
 <div class="home-container">
-  <!-- Tính doanh thu -->
-  <div class="revenue-bar">
-    <label for="start">Từ ngày:</label>
-    <input id="start" type="date" [(ngModel)]="startDate" />
-
-    <label for="end">Đến ngày:</label>
-    <input id="end" type="date" [(ngModel)]="endDate" />
-
-    <button (click)="getRevenue()">Tính doanh thu</button>
-
-    <div *ngIf="totalRevenue !== null">
-      <h3>Doanh thu: {{ totalRevenue | number }} VNĐ</h3>
+  <div class="search-bar">
+    <!-- Form thống kê doanh thu -->
+    <form (ngSubmit)="getMonthlyRevenue()" style="display: flex; align-items: center; gap: 10px;">
+      <label>Chọn năm:</label>
+      <input type="number" [(ngModel)]="selectedYear" name="year" required>
+      <button type="submit">Thống kê</button>
+    </form>
+    <!-- Tìm kiếm đơn hàng -->
+    <div>
+      <input type="text" [(ngModel)]="find" name="phone" placeholder="Nhập số điện thoại" style="width: 580px; margin-left: 30px;">
+      <button (click)="findOrder()" style="margin-left: 10px;">Tìm kiếm</button>
     </div>
   </div>
-  <!-- Tìm kiếm đơn hàng -->
-  <div class="search-bar">
-    <input type="text" [(ngModel)]="find" placeholder="Nhập số điện thoại" />
-    <button (click)="findOrder()">Tìm kiếm</button>
+
+  <!-- Bảng doanh thu hàng tháng -->
+  <div class="revenue-table" *ngIf="showRevenueTable && monthlyRevenue">
+    <table>
+      <thead>
+        <tr class="month-row">
+          <th>Tháng</th>
+          <th *ngFor="let month of months; let i = index">{{ i + 1 }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="revenue-row">
+          <td>Doanh thu (VNĐ)</td>
+          <td *ngFor="let revenue of monthlyRevenue">{{ revenue | number }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <button (click)="closeRevenueTable()" class="close-revenue-btn">Đóng</button>
   </div>
 
   <!-- Danh sách hóa đơn -->
@@ -41,13 +54,13 @@
       <h2>Chi tiết hóa đơn</h2>
       <div>
         <p><strong>Bill ID:</strong> {{ selectedBillDetail.billId }}</p>
-        <p><strong>Customer Name:</strong> {{ selectedBillDetail.customerName }}</p>
+        <p><strong>Tên khách hàng:</strong> {{ selectedBillDetail.customerName }}</p>
         <p><strong>Ngày:</strong> {{ selectedBillDetail.day | date: 'dd/MM/yyyy HH:mm' }}</p>
-        <p><strong>Phương thức thanh toán:</strong> 
+        <p><strong>Phương thức thanh toán:</strong>
           {{ getPaymentMethodDisplay(selectedBillDetail.paymentMethod) }}
         </p>
         <h3>Chi tiết sản phẩm:</h3>
-        
+
         <ul>
           <li *ngFor="let detail of selectedBillDetail.details">
             <p><strong>Tên Sản phẩm:</strong> {{detail.productName }}</p>

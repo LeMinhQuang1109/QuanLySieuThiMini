@@ -92,15 +92,13 @@ export class ManagermentCaterogyComponent {
     this.showAddForm = true;
   }
 
-
-  // Xóa nhà phân phối
   deleteCategory(categoryId: number): void {
     if (confirm('Bạn có chắc chắn muốn xóa danh mục này không?')) {
       this.productsService.deleteCategory(categoryId).subscribe(
         (response) => {
           console.log('Danh mục đã được xóa:', response);
           alert("Xóa thành công");
-          this.loadCategory(); // Tải lại danh sách nhà phân phối sau khi xóa
+          this.loadCategory();
         },
         (error) => {
           console.error('Lỗi:', error);

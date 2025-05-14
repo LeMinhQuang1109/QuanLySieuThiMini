@@ -2,22 +2,42 @@ import { Component } from '@angular/core';
 import { CustomeserviceService } from '../Service/customer_service/customeservice.service';
 import { OrderserviceService } from '../Service/order_service/orderservice.service';
 import { ProductserviceService } from '../Service/product_service/productservice.service';
+import { OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-find-order',
   templateUrl: './find-order.component.html',
   styleUrl: './find-order.component.css'
 })
-export class FindOrderComponent {
+export class FindOrderComponent implements OnInit{
+  ngOnInit(): void {
+    this.loadAllBills(); // Gọi hàm này khi component được load
+  }
+
   find: string = "";
   customer: any;
   bills: any = [];
   selectedBillDetail: any = null;
+
   startDate: string = '';
   endDate: string = '';
   totalRevenue: number | null = null;
+  startMonth: number = 1;
+  endMonth: number = 1;
+  selectedYear: number = new Date().getFullYear();
+  monthlyRevenue: number[] = [];
+  months: string[] = [
+    "Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6", 
+    "Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12"
+  ];
+  showRevenueTable: boolean = false;
 
-  constructor(private customerService: CustomeserviceService, private billService: OrderserviceService, private productService: ProductserviceService) { }
+
+  constructor(
+    private customerService: CustomeserviceService,
+    private billService: OrderserviceService,
+    private productService: ProductserviceService) { }
+
 
   findOrder() {
     if (this.find) {
@@ -106,34 +126,49 @@ export class FindOrderComponent {
     );
   }
 
+  loadAllBills(): void {
+    this.billService.getAllBills().subscribe(
+      (res: any) => {
+        this.bills = res;
+      },
+      (error) => {
+        console.error('Lỗi khi lấy danh sách hóa đơn:', error);
+        alert("Lỗi khi lấy danh sách hóa đơn");
+      }
+    );
+  }
+
   closeModal(): void {
     this.selectedBillDetail = null;
   }
 
-  getRevenue(): void {
-    if (!this.startDate || !this.endDate) {
-      alert("Vui lòng chọn đầy đủ ngày bắt đầu và kết thúc.");
-      return;
-    }
-  
-    // Gọi hàm API trong billService
-    this.billService.getDoanhThu(this.startDate, this.endDate).subscribe({
-      next: (revenue: number) => {
-        this.totalRevenue = revenue;
-      },
-      error: (error) => {
-        console.error('Lỗi khi tính doanh thu:', error);
-        alert("Lỗi khi tính doanh thu");
-      }
-    });
-  }
-
   getPaymentMethodDisplay(method: string): string {
-    switch(method) {
+    switch (method) {
       case 'cash': return 'Tiền mặt';
       case 'card': return 'Thẻ';
       case 'transfer': return 'Chuyển khoản';
       default: return method;
     }
+  }
+
+  //Mới
+  getMonthlyRevenue(): void {
+    if (!this.selectedYear) return;
+    // Gọi hàm API trong billService
+    this.billService.getMonthlyRevenue(this.selectedYear).subscribe({
+      next: (revenue: number[]) => {
+        this.monthlyRevenue = revenue;
+      },
+      error: (error) => {
+        console.error('Lỗi khi lấy doanh thu hàng tháng:', error);
+        alert("Lỗi khi lấy doanh thu hàng tháng");
+      }
+    })
+    this.showRevenueTable = true;
+  }
+
+  closeRevenueTable() {
+    this.showRevenueTable = false;
+    this.monthlyRevenue = [];
   }
 }

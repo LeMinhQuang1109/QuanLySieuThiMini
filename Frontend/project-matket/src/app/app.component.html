@@ -19,14 +19,14 @@
       </ul>
     </li>
     <!-- <li><a routerLink="/supplier" routerLinkActive="active">NHÀ CUNG CẤP</a></li> -->
-    <li>
+    <!-- <li>
       <a href="javascript:void(0)" class="no-click">NHÀ PHÂN PHỐI</a>
       <ul class="dropdown-menu">
         <li *ngFor="let supplier of suppliers">
           <a [routerLink]="['/supplier', supplier.supplierId]">{{ supplier.supplierName }}</a>
         </li>
       </ul>
-    </li>
+    </li> -->
     <li><a routerLink="/cart" routerLinkActive="active">THANH TOÁN</a></li>
     <li><a routerLink="/find-order" routerLinkActive="active">HÓA ĐƠN</a></li>
     <li><a (click)="logout()">ĐĂNG XUẤT</a></li>
