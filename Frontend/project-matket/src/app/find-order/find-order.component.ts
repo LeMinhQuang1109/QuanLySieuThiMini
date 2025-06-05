@@ -154,7 +154,6 @@ export class FindOrderComponent implements OnInit{
   //Mới
   getMonthlyRevenue(): void {
     if (!this.selectedYear) return;
-    // Gọi hàm API trong billService
     this.billService.getMonthlyRevenue(this.selectedYear).subscribe({
       next: (revenue: number[]) => {
         this.monthlyRevenue = revenue;

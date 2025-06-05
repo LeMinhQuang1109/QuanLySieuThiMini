@@ -21,15 +21,18 @@ export class ProductmanagementComponent implements OnInit {
     importPrice: null,
     importDate: null
   };
+  searchTerm: string = '';
+  filteredProducts: any[] = [];
   products: any[] = [];
   showAddForm: boolean = false;
   categories: any[] = [];
   suppliers: any[] = [];
   isEditing: boolean = false;
   currentPage: number = 1;
-  pageSize: number = 9; // số sản phẩm mỗi trang
+  pageSize: number = 9;
   pagedProducts: any[] = [];
   totalPages: number = 0;
+  selectedCategoryId: string = '';
 
   ngOnInit(): void {
     this.loadCaterogy();
@@ -61,12 +64,6 @@ export class ProductmanagementComponent implements OnInit {
     )
   }
 
-  updatePagedProducts(): void {
-    const startIndex = (this.currentPage - 1) * this.pageSize;
-    const endIndex = startIndex + this.pageSize;
-    this.pagedProducts = this.products.slice(startIndex, endIndex);
-  }
-
   changePage(page: number): void {
     if (page >= 1 && page <= this.totalPages) {
       this.currentPage = page;
@@ -78,11 +75,38 @@ export class ProductmanagementComponent implements OnInit {
     this.productService.getproduct().subscribe(
       (data: any) => {
         this.products = data;
+        this.filteredProducts = [...this.products];
         this.totalPages = Math.ceil(this.products.length / this.pageSize);
         this.updatePagedProducts();
       }
     )
   }
+
+  searchProducts(): void {
+    this.filteredProducts = this.products.filter(product => {
+      const matchesName = this.searchTerm
+        ? product.productName.toLowerCase().includes(this.searchTerm.toLowerCase())
+        : true;
+
+      const matchesCategory = this.selectedCategoryId
+        ? product.category.categoryId === this.selectedCategoryId
+        : true;
+
+      return matchesName && matchesCategory;
+    });
+
+    this.totalPages = Math.ceil(this.filteredProducts.length / this.pageSize);
+    this.currentPage = 1;
+    this.updatePagedProducts();
+  }
+
+  updatePagedProducts(): void {
+    const startIndex = (this.currentPage - 1) * this.pageSize;
+    const endIndex = startIndex + this.pageSize;
+    this.pagedProducts = this.filteredProducts.slice(startIndex, endIndex);
+  }
+
+
 
   saveProduct(): void {
     if (this.isEditing) {

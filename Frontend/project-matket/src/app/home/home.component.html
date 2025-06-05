@@ -8,7 +8,7 @@
       aria-label="Product name"
     />
     <select [(ngModel)]="selectedCategory" aria-label="Product category">
-      <option [value]="null">Tất cả danh mục</option>
+      <option value="">Tất cả sản phẩm</option>
       <option *ngFor="let category of Categorys" [value]="category.categoryId">
         {{ category.categoryName }}
       </option>
